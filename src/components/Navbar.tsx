@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
 import { CollectionFormDialog } from "@/components/Forms";
 import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export async function Navbar() {
   const collections = await prisma.collection.findMany({
@@ -15,7 +17,16 @@ export async function Navbar() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">Collections</h2>
         <CollectionFormDialog>
-          <Button size="sm" className="text-white">New</Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button size="icon" className="text-white">
+                <Plus className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Create new collection</p>
+            </TooltipContent>
+          </Tooltip>
         </CollectionFormDialog>
       </div>
       <ul className="mb-4">

@@ -3,6 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -21,8 +23,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Collection, Task } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Plus, Save } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const collectionSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -72,7 +74,16 @@ export function CollectionForm({ collection, onFinished }: CollectionFormProps) 
             </FormItem>
           )}
         />
-        <Button type="submit">{collection ? "Update" : "Create"}</Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button type="submit" size="icon">
+              {collection ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{collection ? "Update collection" : "Create collection"}</p>
+          </TooltipContent>
+        </Tooltip>
       </form>
     </Form>
   );
@@ -208,7 +219,16 @@ export function TaskForm({ task, collections, onFinished, collectionId }: TaskFo
             )}
           />
         )}
-        <Button type="submit">{task ? "Update" : "Create"}</Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button type="submit" size="icon">
+              {task ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{task ? "Update task" : "Create task"}</p>
+          </TooltipContent>
+        </Tooltip>
       </form>
     </Form>
   );

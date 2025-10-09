@@ -3,6 +3,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TaskFormDialog } from "@/components/Forms";
 import { DeleteButton } from "@/components/DeleteButtons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Pencil, Check, Undo } from "lucide-react";
+
 import { Collection } from "@prisma/client";
 import { Task } from "@prisma/client";
 
@@ -26,15 +33,21 @@ export function TaskCard({ task, collections, deleteTaskAction, updateTaskStatus
           </div>
           <div className="flex gap-2">
             <TaskFormDialog task={task} collections={collections}>
-              <Button variant="outline" size="sm">
-                Edit
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edit task</p>
+                </TooltipContent>
+              </Tooltip>
             </TaskFormDialog>
             <DeleteButton
               deleteAction={deleteTaskAction.bind(null, task.id)}
-              text="Task"
+              itemType="Task"
               variant="destructive"
-              size="sm"
             />
             <form
               action={async () => {
@@ -42,21 +55,29 @@ export function TaskCard({ task, collections, deleteTaskAction, updateTaskStatus
                 await updateTaskStatusAction(task.id, !task.isDone);
               }}
             >
-              <Button variant="secondary" size="sm">
-                {task.isDone ? "Undo" : "Done"}
-              </Button>
+
+              <Tooltip>
+                <TooltipTrigger>
+                  <Button variant={task.isDone ? "warning" : "secondary"} size="icon">
+                    {task.isDone ? <Undo className="h-4 w-4" /> : <Check className="h-4 w-4" />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{task.isDone ? "Mark as not done" : "Mark as done"}</p>
+                </TooltipContent>
+              </Tooltip>
+
             </form>
           </div>
         </div>
         <div className="flex items-center justify-between mt-2">
           <span
-            className={`text-xs font-medium px-2 py-1 rounded-md ${
-              task.priority === "HIGH"
-                ? "bg-red-500 text-white"
-                : task.priority === "MEDIUM"
+            className={`text-xs font-medium px-2 py-1 rounded-md ${task.priority === "HIGH"
+              ? "bg-red-500 text-white"
+              : task.priority === "MEDIUM"
                 ? "bg-yellow-500 text-white"
                 : "bg-green-500 text-white"
-            }`}
+              }`}
           >
             {task.priority}
           </span>

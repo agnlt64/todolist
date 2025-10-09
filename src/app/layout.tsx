@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 type RootLayoutProps = Readonly<{ 
   children: React.ReactNode; 
@@ -35,7 +36,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="grid grid-cols-[250px_1fr] gap-8">
             <Navbar />
             <main>
-              {children}
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
             </main>
           </div>
         </div>

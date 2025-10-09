@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { TaskCard } from "@/components/TaskCard";
+import { Plus } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type PageProps = {
   params: { id: string };
@@ -58,11 +60,20 @@ export default async function CollectionPage({ params }: PageProps) {
         <h1 className="text-2xl font-bold">{collection.name}</h1>
         <div className="flex gap-2">
           <TaskFormDialog collections={collections} collectionId={id}>
-            <Button className="text-white">New Task</Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon">
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Create new task</p>
+              </TooltipContent>
+            </Tooltip>
           </TaskFormDialog>
           <DeleteButton
             deleteAction={deleteCollectionAction}
-            text="Collection"
+            itemType="Collection"
             variant="destructive"
           />
         </div>
