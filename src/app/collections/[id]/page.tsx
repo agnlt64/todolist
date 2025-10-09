@@ -4,6 +4,7 @@ import { DeleteButton } from "@/components/DeleteButtons";
 import { BreadcrumbComponent } from "@/components/Breadcrumb";
 import { Button } from "@/components/ui/button";
 import { notFound, redirect } from "next/navigation";
+import { DialogTrigger } from "@/components/ui/dialog";
 import { revalidatePath } from "next/cache";
 import { TaskCard } from "@/components/TaskCard";
 import { Plus } from "lucide-react";
@@ -59,12 +60,14 @@ export default async function CollectionPage({ params }: PageProps) {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">{collection.name}</h1>
         <div className="flex gap-2">
-          <TaskFormDialog collections={collections} collectionId={id}>
+          <TaskFormDialog collectionId={id}>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button size="icon">
-                  <Plus className="h-4 w-4" />
-                </Button>
+                <DialogTrigger asChild>
+                  <Button size="icon" className="text-white">
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </DialogTrigger>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Create new task</p>
@@ -86,7 +89,6 @@ export default async function CollectionPage({ params }: PageProps) {
             <TaskCard
               key={task.id}
               task={task}
-              collections={collections}
               deleteTaskAction={deleteTaskAction}
               updateTaskStatusAction={updateTaskStatusAction}
             />
@@ -105,7 +107,6 @@ export default async function CollectionPage({ params }: PageProps) {
               <TaskCard
                 key={task.id}
                 task={task}
-                collections={collections}
                 deleteTaskAction={deleteTaskAction}
                 updateTaskStatusAction={updateTaskStatusAction}
               />

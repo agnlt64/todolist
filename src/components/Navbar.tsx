@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
 import { CollectionFormDialog } from "@/components/Forms";
+import { DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -19,9 +20,11 @@ export async function Navbar() {
         <CollectionFormDialog>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size="icon" className="text-white">
-                <Plus className="h-4 w-4" />
-              </Button>
+              <DialogTrigger asChild>
+                <Button size="icon" className="text-white">
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </DialogTrigger>
             </TooltipTrigger>
             <TooltipContent>
               <p>Create new collection</p>

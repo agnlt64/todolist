@@ -23,8 +23,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Collection, Task } from "@prisma/client";
-import { Plus, Save } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const collectionSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -74,16 +72,7 @@ export function CollectionForm({ collection, onFinished }: CollectionFormProps) 
             </FormItem>
           )}
         />
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button type="submit" size="icon">
-              {collection ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{collection ? "Update collection" : "Create collection"}</p>
-          </TooltipContent>
-        </Tooltip>
+        <Button type="submit" className="w-full text-white">Create Collection</Button>
       </form>
     </Form>
   );
@@ -123,12 +112,11 @@ const taskSchema = z.object({
 
 type TaskFormProps = {
   task?: Task;
-  collections: Collection[];
   onFinished?: () => void;
   collectionId?: string;
 };
 
-export function TaskForm({ task, collections, onFinished, collectionId }: TaskFormProps) {
+export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
   const router = useRouter();
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -197,38 +185,9 @@ export function TaskForm({ task, collections, onFinished, collectionId }: TaskFo
             </FormItem>
           )}
         />
-        {collectionId === undefined && (
-          <FormField
-            control={form.control}
-            name="collectionId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Collection</FormLabel>
-                <FormControl>
-                  <select {...field}>
-                    <option value="">No collection</option>
-                    {collections.map((collection) => (
-                      <option key={collection.id} value={collection.id}>
-                        {collection.name}
-                      </option>
-                    ))}
-                  </select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button type="submit" size="icon">
-              {task ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{task ? "Update task" : "Create task"}</p>
-          </TooltipContent>
-        </Tooltip>
+          <Button type="submit" className="w-full text-white">
+            {task ? "Update task" : "Create task"}
+          </Button>
       </form>
     </Form>
   );
@@ -236,12 +195,11 @@ export function TaskForm({ task, collections, onFinished, collectionId }: TaskFo
 
 type TaskFormDialogProps = {
   task?: Task;
-  collections: Collection[];
   children: React.ReactNode;
   collectionId?: string;
 };
 
-export function TaskFormDialog({ task, collections, children, collectionId }: TaskFormDialogProps) {
+export function TaskFormDialog({ task, children, collectionId }: TaskFormDialogProps) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -252,7 +210,6 @@ export function TaskFormDialog({ task, collections, children, collectionId }: Ta
         </DialogHeader>
         <TaskForm
           task={task}
-          collections={collections}
           onFinished={() => setOpen(false)}
           collectionId={collectionId}
         />
