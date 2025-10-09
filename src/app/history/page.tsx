@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { BreadcrumbComponent } from "@/components/Breadcrumb";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default async function HistoryPage() {
@@ -9,6 +10,7 @@ export default async function HistoryPage() {
 
   return (
     <main>
+      <BreadcrumbComponent />
       <h1 className="text-2xl font-bold mb-4">History</h1>
 
       <div className="grid gap-4">

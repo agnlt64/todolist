@@ -28,13 +28,12 @@ const collectionSchema = z.object({
   name: z.string().min(1, "Name is required"),
 });
 
-export function CollectionForm({
-  collection,
-  onFinished,
-}: {
+type CollectionFormProps = {
   collection?: Collection;
   onFinished?: () => void;
-}) {
+};
+
+export function CollectionForm({ collection, onFinished }: CollectionFormProps) {
   const router = useRouter();
   const form = useForm<z.infer<typeof collectionSchema>>({
     resolver: zodResolver(collectionSchema),
@@ -79,13 +78,12 @@ export function CollectionForm({
   );
 }
 
-export function CollectionFormDialog({
-  collection,
-  children,
-}: {
+type CollectionFormDialogProps = {
   collection?: Collection;
   children: React.ReactNode;
-}) {
+};
+
+export function CollectionFormDialog({ collection, children }: CollectionFormDialogProps) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -112,15 +110,14 @@ const taskSchema = z.object({
   collectionId: z.string().optional(),
 });
 
-export function TaskForm({
-  task,
-  collections,
-  onFinished,
-}: {
+type TaskFormProps = {
   task?: Task;
   collections: Collection[];
   onFinished?: () => void;
-}) {
+  collectionId?: string;
+};
+
+export function TaskForm({ task, collections, onFinished, collectionId }: TaskFormProps) {
   const router = useRouter();
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -128,7 +125,7 @@ export function TaskForm({
       name: task?.name || "",
       description: task?.description || "",
       priority: task?.priority || "LOW",
-      collectionId: task?.collectionId || undefined,
+      collectionId: task?.collectionId || collectionId,
     },
   });
 
@@ -189,41 +186,42 @@ export function TaskForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="collectionId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Collection</FormLabel>
-              <FormControl>
-                <select {...field}>
-                  <option value="">No collection</option>
-                  {collections.map((collection) => (
-                    <option key={collection.id} value={collection.id}>
-                      {collection.name}
-                    </option>
-                  ))}
-                </select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {collectionId === undefined && (
+          <FormField
+            control={form.control}
+            name="collectionId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Collection</FormLabel>
+                <FormControl>
+                  <select {...field}>
+                    <option value="">No collection</option>
+                    {collections.map((collection) => (
+                      <option key={collection.id} value={collection.id}>
+                        {collection.name}
+                      </option>
+                    ))}
+                  </select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <Button type="submit">{task ? "Update" : "Create"}</Button>
       </form>
     </Form>
   );
 }
 
-export function TaskFormDialog({
-  task,
-  collections,
-  children,
-}: {
+type TaskFormDialogProps = {
   task?: Task;
   collections: Collection[];
   children: React.ReactNode;
-}) {
+  collectionId?: string;
+};
+
+export function TaskFormDialog({ task, collections, children, collectionId }: TaskFormDialogProps) {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -236,6 +234,7 @@ export function TaskFormDialog({
           task={task}
           collections={collections}
           onFinished={() => setOpen(false)}
+          collectionId={collectionId}
         />
       </DialogContent>
     </Dialog>

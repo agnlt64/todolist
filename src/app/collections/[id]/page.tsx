@@ -1,16 +1,20 @@
 import { prisma } from "@/app/lib/prisma";
 import { TaskFormDialog } from "@/components/Forms";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import { notFound } from "next/navigation";
+import { DeleteButton } from "@/components/DeleteButtons";
+import { BreadcrumbComponent } from "@/components/Breadcrumb";
 import { Button } from "@/components/ui/button";
+import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { TaskCard } from "@/components/TaskCard";
 
-export default async function CollectionPage({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: { id: string };
+};
+
+export default async function CollectionPage({ params }: PageProps) {
+  const { id } = params;
   const collection = await prisma.collection.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { tasks: { orderBy: { createdAt: "desc" } } },
   });
 
@@ -20,76 +24,84 @@ export default async function CollectionPage({ params }: { params: { id: string 
 
   const collections = await prisma.collection.findMany();
 
+  async function deleteCollectionAction() {
+    "use server";
+    await prisma.$transaction([
+      prisma.task.deleteMany({ where: { collectionId: id } }),
+      prisma.collection.delete({ where: { id } }),
+    ]);
+    redirect("/");
+  }
+
+  async function deleteTaskAction(taskId: string) {
+    "use server";
+    await prisma.task.delete({ where: { id: taskId } });
+    revalidatePath(`/collections/${id}`);
+  }
+
+  async function updateTaskStatusAction(taskId: string, isDone: boolean) {
+    "use server";
+    await prisma.task.update({
+      where: { id: taskId },
+      data: { isDone, doneAt: isDone ? new Date() : null },
+    });
+    revalidatePath(`/collections/${id}`);
+  }
+
+  const activeTasks = collection.tasks.filter((task) => !task.isDone);
+  const completedTasks = collection.tasks.filter((task) => task.isDone);
+
   return (
     <main>
+      <BreadcrumbComponent collectionName={collection.name} />
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">{collection.name}</h1>
-        <TaskFormDialog collections={collections}>
-          <Button>New Task</Button>
-        </TaskFormDialog>
+        <div className="flex gap-2">
+          <TaskFormDialog collections={collections} collectionId={id}>
+            <Button className="text-white">New Task</Button>
+          </TaskFormDialog>
+          <DeleteButton
+            deleteAction={deleteCollectionAction}
+            text="Collection"
+            variant="destructive"
+          />
+        </div>
       </div>
 
-      <div className="grid gap-4">
-        {collection.tasks.map((task) => (
-          <Card key={task.id}>
-            <CardContent className="p-4">
-              <div className="flex justify-between">
-                <div>
-                  <p className="font-semibold">{task.name}</p>
-                  {task.description && (
-                    <p className="text-sm text-gray-500">{task.description}</p>
-                  )}
-                </div>
-                <div className="flex gap-2">
-                  <TaskFormDialog task={task} collections={collections}>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                  </TaskFormDialog>
-                  <form
-                    action={async () => {
-                      "use server";
-                      await prisma.task.delete({ where: { id: task.id } });
-                      revalidatePath(`/collections/${collection.id}`);
-                    }}
-                  >
-                    <Button variant="destructive" size="sm">
-                      Delete
-                    </Button>
-                  </form>
-                  <form
-                    action={async () => {
-                      "use server";
-                      await prisma.task.update({
-                        where: { id: task.id },
-                        data: { isDone: !task.isDone, doneAt: new Date() },
-                      });
-                      revalidatePath(`/collections/${collection.id}`);
-                    }}
-                  >
-                    <Button variant="secondary" size="sm">
-                      {task.isDone ? "Undo" : "Done"}
-                    </Button>
-                  </form>
-                </div>
-              </div>
-              <div className="flex items-center justify-between mt-2">
-                <span
-                  className={`text-sm font-medium px-2 py-1 rounded-full ${
-                    task.priority === "HIGH"
-                      ? "bg-red-500 text-white"
-                      : task.priority === "MEDIUM"
-                      ? "bg-yellow-500 text-white"
-                      : "bg-green-500 text-white"
-                  }`}
-                >
-                  {task.priority}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      <div>
+        <h2 className="text-xl font-semibold mb-4">To Do</h2>
+        <div className="grid gap-4">
+          {activeTasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              collections={collections}
+              deleteTaskAction={deleteTaskAction}
+              updateTaskStatusAction={updateTaskStatusAction}
+            />
+          ))}
+          {activeTasks.length === 0 && (
+            <p className="text-muted-foreground">No tasks to do in this collection.</p>
+          )}
+        </div>
       </div>
+
+      {completedTasks.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Completed</h2>
+          <div className="grid gap-4">
+            {completedTasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                collections={collections}
+                deleteTaskAction={deleteTaskAction}
+                updateTaskStatusAction={updateTaskStatusAction}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

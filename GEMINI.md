@@ -85,3 +85,4 @@ Créer une application web simple de gestion de tâches (TodoList) avec Next.js,
 
 ## Autres considérations
 Ne lance jamais le linter et ne commit jamais les changements.
+Si tu dois installer des composants shadcn, utilise la commande `npx sahdcn@latest add`.
