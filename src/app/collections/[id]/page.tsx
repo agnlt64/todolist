@@ -8,17 +8,40 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import { revalidatePath } from "next/cache";
 import { TaskCard } from "@/components/TaskCard";
 import { Plus } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { SortComponent } from "@/components/SortComponent";
 
 type PageProps = {
   params: { id: string };
+  searchParams: { sortBy?: string };
 };
 
-export default async function CollectionPage({ params }: PageProps) {
+export default async function CollectionPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { id } = params;
+  const { sortBy } = searchParams;
+
+  let orderByClause: any = { createdAt: "desc" };
+
+  if (sortBy === "priority-desc") {
+    orderByClause = { priority: "desc" };
+  } else if (sortBy === "priority-asc") {
+    orderByClause = { priority: "asc" };
+  }
+
   const collection = await prisma.collection.findUnique({
     where: { id },
-    include: { tasks: { orderBy: { createdAt: "desc" } } },
+    include: {
+      tasks: {
+        orderBy: orderByClause,
+      },
+    },
   });
 
   if (!collection) {
@@ -78,6 +101,10 @@ export default async function CollectionPage({ params }: PageProps) {
             variant="destructive"
           />
         </div>
+      </div>
+
+      <div className="mb-4 flex justify-end">
+        <SortComponent />
       </div>
 
       <div>
