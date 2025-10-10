@@ -22,6 +22,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Collection, Task } from "@prisma/client";
 
 const collectionSchema = z.object({
@@ -142,52 +149,61 @@ export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Task name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Input placeholder="Task description" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="priority"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Priority</FormLabel>
-              <FormControl>
-                <select {...field}>
-                  <option value="LOW">Low</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="HIGH">High</option>
-                </select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-          <Button type="submit" className="w-full text-white">
-            {task ? "Update task" : "Create task"}
-          </Button>
+      <FormField
+        control={form.control}
+        name="name"
+        render={({ field }) => (
+        <FormItem>
+          <FormLabel>Name</FormLabel>
+          <FormControl>
+          <Input placeholder="Task name" {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="description"
+        render={({ field }) => (
+        <FormItem>
+          <FormLabel>Description</FormLabel>
+          <FormControl>
+          <Input placeholder="Task description" {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="priority"
+        render={({ field }) => (
+        <FormItem>
+          <FormLabel>Priority</FormLabel>
+          <FormControl>
+          <Select
+            value={field.value}
+            onValueChange={field.onChange}
+            defaultValue={field.value}
+          >
+            <SelectTrigger>
+            <SelectValue placeholder="Select priority" />
+            </SelectTrigger>
+            <SelectContent>
+            <SelectItem value="LOW">Low</SelectItem>
+            <SelectItem value="MEDIUM">Medium</SelectItem>
+            <SelectItem value="HIGH">High</SelectItem>
+            </SelectContent>
+          </Select>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+        )}
+      />
+      <Button type="submit" className="w-full text-white">
+        {task ? "Update task" : "Create task"}
+      </Button>
       </form>
     </Form>
   );
