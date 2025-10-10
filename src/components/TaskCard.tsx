@@ -43,7 +43,7 @@ export function TaskCard({ task, deleteTaskAction, updateTaskStatusAction }: Tas
                     </DialogTrigger>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Edit task</p>
+                    <p>Modifier la tâche</p>
                   </TooltipContent>
                 </Tooltip>
               </TaskFormDialog>
@@ -62,26 +62,26 @@ export function TaskCard({ task, deleteTaskAction, updateTaskStatusAction }: Tas
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>{task.isDone ? "Mark as not done" : "Mark as done"}</p>
+                <p>{task.isDone ? "Marquer comme non terminée" : "Marquer comme terminée"}</p>
               </TooltipContent>
             </Tooltip>
             <DeleteButton
               deleteAction={deleteTaskAction.bind(null, task.id)}
-              itemType="Task"
+              itemType="Tâche"
               variant="destructive"
             />
           </div>
         </div>
         <div className="flex items-center justify-between mt-2">
           <span
-            className={`text-xs font-medium px-2 py-1 rounded-md ${task.priority === "HIGH"
+            className={`text-xs font-medium uppercase px-2 py-1 rounded-md ${task.priority === "HIGH"
               ? "bg-red-500 text-white"
               : task.priority === "MEDIUM"
                 ? "bg-yellow-500 text-white"
                 : "bg-green-500 text-white"
               }`}
           >
-            {task.priority}
+            {task.priority === "HIGH" ? "Haute" : task.priority === "MEDIUM" ? "Moyenne" : "Basse"}
           </span>
         </div>
       </CardContent>

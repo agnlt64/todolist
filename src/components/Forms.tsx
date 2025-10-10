@@ -32,7 +32,7 @@ import {
 import { Collection, Task } from "@prisma/client";
 
 const collectionSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Le nom est requis"),
 });
 
 type CollectionFormProps = {
@@ -71,15 +71,15 @@ export function CollectionForm({ collection, onFinished }: CollectionFormProps) 
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nom</FormLabel>
               <FormControl>
-                <Input placeholder="Collection name" {...field} />
+                <Input placeholder="Nom de la collection" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full text-white">Create Collection</Button>
+        <Button type="submit" className="w-full text-white">Créer la collection</Button>
       </form>
     </Form>
   );
@@ -98,7 +98,7 @@ export function CollectionFormDialog({ collection, children }: CollectionFormDia
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {collection ? "Edit" : "Create"} Collection
+            {collection ? "Modifier" : "Créer"} une collection
           </DialogTitle>
         </DialogHeader>
         <CollectionForm
@@ -111,7 +111,7 @@ export function CollectionFormDialog({ collection, children }: CollectionFormDia
 }
 
 const taskSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, "Le nom est requis"),
   description: z.string().optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
   collectionId: z.string().optional(),
@@ -154,9 +154,9 @@ export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
         name="name"
         render={({ field }) => (
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Nom</FormLabel>
           <FormControl>
-          <Input placeholder="Task name" {...field} />
+          <Input placeholder="Nom de la tâche" {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -169,7 +169,7 @@ export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
         <FormItem>
           <FormLabel>Description</FormLabel>
           <FormControl>
-          <Input placeholder="Task description" {...field} />
+          <Input placeholder="Description de la tâche" {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -180,7 +180,7 @@ export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
         name="priority"
         render={({ field }) => (
         <FormItem>
-          <FormLabel>Priority</FormLabel>
+          <FormLabel>Priorité</FormLabel>
           <FormControl>
           <Select
             value={field.value}
@@ -188,12 +188,12 @@ export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
             defaultValue={field.value}
           >
             <SelectTrigger>
-            <SelectValue placeholder="Select priority" />
+            <SelectValue placeholder="Sélectionner une priorité" />
             </SelectTrigger>
             <SelectContent>
-            <SelectItem value="LOW">Low</SelectItem>
-            <SelectItem value="MEDIUM">Medium</SelectItem>
-            <SelectItem value="HIGH">High</SelectItem>
+            <SelectItem value="LOW">Basse</SelectItem>
+            <SelectItem value="MEDIUM">Moyenne</SelectItem>
+            <SelectItem value="HIGH">Haute</SelectItem>
             </SelectContent>
           </Select>
           </FormControl>
@@ -202,7 +202,7 @@ export function TaskForm({ task, onFinished, collectionId }: TaskFormProps) {
         )}
       />
       <Button type="submit" className="w-full text-white">
-        {task ? "Update task" : "Create task"}
+        {task ? "Mettre à jour la tâche" : "Créer la tâche"}
       </Button>
       </form>
     </Form>
@@ -222,7 +222,7 @@ export function TaskFormDialog({ task, children, collectionId }: TaskFormDialogP
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{task ? "Edit" : "Create"} Task</DialogTitle>
+          <DialogTitle>{task ? "Modifier" : "Créer"} une tâche</DialogTitle>
         </DialogHeader>
         <TaskForm
           task={task}

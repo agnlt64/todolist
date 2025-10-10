@@ -12,7 +12,7 @@ export default async function HistoryPage() {
   return (
     <main>
       <BreadcrumbComponent />
-      <h1 className="text-2xl font-bold mb-4">History</h1>
+      <h1 className="text-2xl font-bold mb-4">Historique</h1>
 
       <div className="grid gap-4">
         {completedTasks.map((task) => (
@@ -21,7 +21,7 @@ export default async function HistoryPage() {
               <Link href={`/collections/${task.collectionId}`} className="font-semibold">{task.name}</Link>
               {task.description && <p className="text-sm text-gray-500">{task.description}</p>}
               <p className="text-sm text-gray-400 mt-2">
-                Completed on {task.doneAt?.toLocaleDateString()}
+                Terminée le {task.doneAt?.toLocaleDateString()}
               </p>
             </CardContent>
           </Card>

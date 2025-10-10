@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ma todo list",
-  description: "Une app de todo list simple et efficace",
+  title: "Ma liste de tâches",
+  description: "Une application de liste de tâches simple et efficace",
 };
 
 import { Navbar } from "@/components/Navbar";
@@ -27,7 +27,7 @@ type RootLayoutProps = Readonly<{
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

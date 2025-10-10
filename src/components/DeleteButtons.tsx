@@ -21,9 +21,9 @@ export function DeleteButton({ deleteAction, itemType, variant, size }: DeleteBu
           action={async () => {
             try {
               await deleteAction();
-              toast.success(`${itemType} deleted successfully.`);
+              toast.success(`${itemType} supprimé(e) avec succès.`);
             } catch (error) {
-              toast.error(`Failed to delete ${itemType.toLowerCase()}: ${error}`);
+              toast.error(`Échec de la suppression de ${itemType.toLowerCase()}: ${error}`);
             }
           }}
         >
@@ -33,7 +33,7 @@ export function DeleteButton({ deleteAction, itemType, variant, size }: DeleteBu
         </form>
       </TooltipTrigger>
       <TooltipContent>
-        <p>{`Delete ${itemType}`}</p>
+        <p>{`Supprimer ${itemType}`}</p>
       </TooltipContent>
     </Tooltip>
   );

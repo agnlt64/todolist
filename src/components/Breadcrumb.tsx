@@ -25,7 +25,7 @@ export function BreadcrumbComponent({ collectionName }: BreadcrumbComponentProps
       <BreadcrumbList>
         <BreadcrumbItem key="home">
           <BreadcrumbLink asChild>
-            <Link href="/">Home</Link>
+            <Link href="/">Accueil</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         {segments.map((segment, index) => {

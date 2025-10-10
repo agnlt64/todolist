@@ -20,7 +20,7 @@ export default async function HomePage() {
     <div>
       <BreadcrumbComponent />
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Important Tasks</h1>
+        <h1 className="text-2xl font-bold">Tâches importantes</h1>
       </div>
       <div className="space-y-4">
         {importantTasks.map(task => (
@@ -42,7 +42,7 @@ export default async function HomePage() {
         ))}
         {importantTasks.length === 0 && (
           <div className="p-4 bg-card rounded-lg text-center text-muted-foreground">
-            No important tasks for now.
+            Aucune tâche importante pour le moment.
           </div>
         )}
       </div>

@@ -92,7 +92,7 @@ export default async function CollectionPage({
                 </DialogTrigger>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Create new task</p>
+                <p>Créer une nouvelle tâche</p>
               </TooltipContent>
             </Tooltip>
           </TaskFormDialog>
@@ -105,7 +105,7 @@ export default async function CollectionPage({
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-4">To Do</h2>
+        <h2 className="text-xl font-semibold mb-4">À faire</h2>
         <div className="grid gap-4">
           {activeTasks.map((task) => (
             <TaskCard
@@ -116,14 +116,14 @@ export default async function CollectionPage({
             />
           ))}
           {activeTasks.length === 0 && (
-            <p className="text-muted-foreground">No tasks to do in this collection.</p>
+            <p className="text-muted-foreground">Aucune tâche à faire dans cette collection.</p>
           )}
         </div>
       </div>
 
       {completedTasks.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Completed</h2>
+          <h2 className="text-xl font-semibold mb-4">Terminées</h2>
           <div className="grid gap-4">
             {completedTasks.map((task) => (
               <TaskCard

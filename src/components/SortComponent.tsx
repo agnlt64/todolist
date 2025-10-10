@@ -29,13 +29,13 @@ export function SortComponent() {
       onValueChange={handleSortChange}
       defaultValue={searchParams.get("sortBy") || "default"}
     >
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Sort by" />
+      <SelectTrigger className="w-[220px]">
+        <SelectValue placeholder="Trier par" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="default">Sort by Date</SelectItem>
-        <SelectItem value="priority-desc">Priority (High to Low)</SelectItem>
-        <SelectItem value="priority-asc">Priority (Low to High)</SelectItem>
+        <SelectItem value="default">Trier par date</SelectItem>
+        <SelectItem value="priority-desc">Priorité (Haute à Basse)</SelectItem>
+        <SelectItem value="priority-asc">Priorité (Basse à Haute)</SelectItem>
       </SelectContent>
     </Select>
   );

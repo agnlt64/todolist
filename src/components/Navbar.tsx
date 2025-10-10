@@ -42,7 +42,7 @@ export async function Navbar() {
               </DialogTrigger>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Create new collection</p>
+              <p>Créer une nouvelle collection</p>
             </TooltipContent>
           </Tooltip>
         </CollectionFormDialog>
@@ -68,7 +68,7 @@ export async function Navbar() {
         href="/history"
         className="text-sm text-muted-foreground hover:underline"
       >
-        View tasks history
+        Voir l'historique des tâches
       </Link>
     </nav>
   );
