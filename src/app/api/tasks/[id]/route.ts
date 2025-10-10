@@ -10,7 +10,8 @@ type TaskUpdateRequest = {
   collectionId?: string | null;
 };
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, {params}: {params: Promise<{ id: string }>}) {
+  const { id } = await params;
   const { name, description, priority, isDone, collectionId } = await request.json();
   const data: TaskUpdateRequest = { name, description, priority, collectionId };
   if (isDone !== undefined) {
@@ -18,15 +19,16 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     data.doneAt = isDone ? new Date() : null;
   }
   const task = await prisma.task.update({
-    where: { id: params.id },
+    where: { id },
     data: data as any,
   });
   return NextResponse.json(task);
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, {params}: {params: Promise<{ id: string }>}) {
+  const { id } = await params;
   await prisma.task.delete({
-    where: { id: params.id },
+    where: { id },
   });
   return new NextResponse(null, { status: 204 });
 }
