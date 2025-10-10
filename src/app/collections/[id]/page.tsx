@@ -81,6 +81,7 @@ export default async function CollectionPage({
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">{collection.name}</h1>
         <div className="flex gap-2">
+          <SortComponent />
           <TaskFormDialog collectionId={id}>
             <Tooltip>
               <TooltipTrigger asChild>
@@ -101,10 +102,6 @@ export default async function CollectionPage({
             variant="destructive"
           />
         </div>
-      </div>
-
-      <div className="mb-4 flex justify-end">
-        <SortComponent />
       </div>
 
       <div>

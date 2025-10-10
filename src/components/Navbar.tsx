@@ -4,12 +4,27 @@ import { CollectionFormDialog } from "@/components/Forms";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export async function Navbar() {
   const collections = await prisma.collection.findMany({
     orderBy: {
-      createdAt: 'desc',
+      createdAt: "desc",
+    },
+    include: {
+      _count: {
+        select: {
+          tasks: {
+            where: {
+              isDone: false,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -35,13 +50,24 @@ export async function Navbar() {
       <ul className="mb-4">
         {collections.map((collection) => (
           <li key={collection.id}>
-            <Link href={`/collections/${collection.id}`} className="block p-2 hover:bg-accent rounded-md">
-              {collection.name}
+            <Link
+              href={`/collections/${collection.id}`}
+              className="block p-2 hover:bg-accent rounded-md"
+            >
+              <div className="flex justify-between items-center gap-2">
+                <span>{collection.name}</span>
+                <span className="text-xs bg-red-500 text-white font-bold rounded-full px-2 py-1">
+                  {collection._count.tasks}
+                </span>
+              </div>
             </Link>
           </li>
         ))}
       </ul>
-      <Link href="/history" className="text-sm text-muted-foreground hover:underline">
+      <Link
+        href="/history"
+        className="text-sm text-muted-foreground hover:underline"
+      >
         View tasks history
       </Link>
     </nav>

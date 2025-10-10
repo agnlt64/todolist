@@ -33,7 +33,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <div className="container mx-auto p-4">
           <Navbar />
-          <div className="ml-[250px]">
+          <div className="ml-[270px]">
             <TooltipProvider>
               {children}
             </TooltipProvider>
