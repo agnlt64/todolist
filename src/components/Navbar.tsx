@@ -68,7 +68,7 @@ export async function Navbar() {
         href="/history"
         className="text-sm text-muted-foreground hover:underline"
       >
-        Voir l'historique des tâches
+        Voir l&apos;historique des tâches
       </Link>
     </nav>
   );
