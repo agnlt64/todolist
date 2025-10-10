@@ -25,8 +25,6 @@ export default async function CollectionPage({ params }: PageProps) {
     notFound();
   }
 
-  const collections = await prisma.collection.findMany();
-
   async function deleteCollectionAction() {
     "use server";
     await prisma.$transaction([

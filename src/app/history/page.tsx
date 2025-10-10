@@ -1,6 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { BreadcrumbComponent } from "@/components/Breadcrumb";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default async function HistoryPage() {
   const completedTasks = await prisma.task.findMany({

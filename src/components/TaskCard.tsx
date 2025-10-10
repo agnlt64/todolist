@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/tooltip";
 import { Pencil, Check, Undo } from "lucide-react";
 
-import { Collection } from "@prisma/client";
 import { Task } from "@prisma/client";
 
 type TaskCardProps = {

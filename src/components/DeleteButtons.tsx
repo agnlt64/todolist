@@ -23,7 +23,7 @@ export function DeleteButton({ deleteAction, itemType, variant, size }: DeleteBu
               await deleteAction();
               toast.success(`${itemType} deleted successfully.`);
             } catch (error) {
-              toast.error(`Failed to delete ${itemType.toLowerCase()}.`);
+              toast.error(`Failed to delete ${itemType.toLowerCase()}: ${error}`);
             }
           }}
         >
