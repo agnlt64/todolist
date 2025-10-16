@@ -24,8 +24,8 @@ export default async function CollectionPage({
   params,
   searchParams,
 }: PageProps) {
-  const { id } = params;
-  const { sortBy } = searchParams;
+  const { id } = await params;
+  const { sortBy } = await searchParams;
 
   let orderByClause: any = { createdAt: "desc" };
 
